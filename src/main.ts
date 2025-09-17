@@ -10,7 +10,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('LeoLink')
-    .setDescription('Uma rede social voltada para o mundo acadêmico. Desenvolvida pelos alunos da Uniasselvi. Turmas: EGS0011, EGS0016 e EGS0016.')
+    .setDescription(
+      'Uma rede social voltada para o mundo acadêmico. Desenvolvida pelos alunos da Uniasselvi. Turmas: EGS0011, EGS0016 e EGS0016.',
+    )
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
