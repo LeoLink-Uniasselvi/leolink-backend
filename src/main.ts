@@ -20,7 +20,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(process.env.APP_PORT || 3000);
+  const port = process.env.APP_PORT || 3000;
+  await app.listen(port);
+  console.log(`Aplicação está rodando na porta ${port}`);
+  console.log(`Swagger disponível em: http://localhost:${port}/docs`);
 }
 
 bootstrap().catch((error) => {
