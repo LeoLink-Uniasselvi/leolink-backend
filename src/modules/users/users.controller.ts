@@ -15,7 +15,7 @@ import {
   SoftDeleteUserUseCase,
   ActivateUserUseCase,
 } from './use-cases';
-import { CreateUserDto, UpdateUserDto } from './dtos';
+import { CreateUserFormDto, UpdateUserFormDto } from './dtos';
 
 @Controller('users')
 export class UsersController {
@@ -29,7 +29,7 @@ export class UsersController {
   ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserFormDto) {
     return this.createUserUseCase.execute(createUserDto);
   }
 
@@ -40,21 +40,21 @@ export class UsersController {
 
   @Get(':id')
   get(@Param('id') id: string) {
-    return this.getUserUseCase.execute(+id);
+    return this.getUserUseCase.execute(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.updateUserUseCase.execute(+id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserFormDto) {
+    return this.updateUserUseCase.execute(id, updateUserDto);
   }
 
   @Delete(':id')
   softDelete(@Param('id') id: string) {
-    return this.softDeleteUserUseCase.execute(+id);
+    return this.softDeleteUserUseCase.execute(id);
   }
 
   @Post(':id/activate')
   activate(@Param('id') id: string) {
-    return this.activateUserUseCase.execute(+id);
+    return this.activateUserUseCase.execute(id);
   }
 }
