@@ -3,7 +3,7 @@ import { SoftDeletable } from '@/common/entities/traits/soft-deletable.trait';
 import { Named } from '@/common/entities/traits/named.trait';
 import { BaseEntity } from '@/common/entities/base.entity';
 
-@Entity()
+@Entity('users')
 export class User extends SoftDeletable(Named(BaseEntity)) {
   @Column()
   @Unique('email', ['email'])
