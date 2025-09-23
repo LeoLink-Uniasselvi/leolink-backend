@@ -1,18 +1,24 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { NamedDto } from '@/common/dtos/traits/named.dto';
 
 class _UpdateUserFormDto extends NamedDto {
+  @ApiProperty({
+    description: 'Endereço de email do usuário',
+    example: 'joao@example.com',
+    format: 'email',
+  })
   @IsNotEmpty({
-    message: 'Email is required',
+    message: 'O email é obrigatório',
   })
   @IsString({
-    message: 'Email must be a string',
+    message: 'O email deve ser uma string',
   })
   @IsEmail(
     {},
     {
-      message: 'Email must be a valid email',
+      message: 'O email deve ser um endereço válido',
     },
   )
   email: string;

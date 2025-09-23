@@ -1,18 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseResponseDto } from '@/common/dtos/base-response.dto';
+import { BaseEntityDto } from '@/common/dtos/base-entity.dto';
 
-export class UserResponseDto extends BaseResponseDto {
-  @ApiProperty({ example: 'João Silva', readOnly: true })
+export class UserDto extends BaseEntityDto {
+  @ApiProperty({
+    example: 'Fulano da Silva',
+    readOnly: true,
+    description: 'Nome completo do usuário',
+  })
   name!: string;
 
-  @ApiProperty({ example: 'joao@example.com', readOnly: true })
+  @ApiProperty({
+    example: 'fulano.silva@email.com',
+    readOnly: true,
+    description: 'Endereço de email do usuário',
+  })
   email!: string;
 
-  @ApiProperty({ example: true, readOnly: true })
+  @ApiProperty({
+    example: true,
+    readOnly: true,
+    description: 'Indica se a conta do usuário está ativa',
+  })
   isActive!: boolean;
-
-  constructor(init?: Partial<UserResponseDto>) {
-    super();
-    Object.assign(this, init);
-  }
 }

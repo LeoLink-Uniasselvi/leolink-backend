@@ -10,4 +10,14 @@ export { UpdateUserResponseDto } from './update-user/update-user.response.dto';
 export { IndexUsersResponseDto } from './index-users/index-users.response.dto';
 
 //Shared
-export { UserResponseDto } from './shared/user.response.dto';
+export { UserDto } from './shared/user.response.dto';
+
+//Responses
+export { UserResponseDto } from './responses/user.response.dto';
+export { PaginatedUsersResponseDto } from './responses/paginated-users.response.dto';
+export {
+  CreateUserResponseDto as CreateUserRespDto,
+  UpdateUserResponseDto as UpdateUserRespDto,
+  DeleteUserResponseDto,
+  ActivateUserResponseDto,
+} from './responses/crud-users.response.dto';
