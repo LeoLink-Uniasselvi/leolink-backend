@@ -78,7 +78,7 @@ export class UserRepository implements IUserRepository {
       where: {
         email,
       },
-      select: ['id', 'name', 'email', 'password'],
+      select: ['id', 'name', 'email', 'password', 'createdAt', 'updatedAt'],
     });
   }
 }
