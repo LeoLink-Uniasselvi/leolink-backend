@@ -1,19 +1,33 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
 
 export class LoginFormDto {
+  @ApiProperty({
+    description: 'Endereço de email do usuário',
+    example: 'usuario@example.com',
+    format: 'email',
+  })
   @IsNotEmpty({
-    message: 'Email is required',
+    message: 'O email é obrigatório',
   })
-  @IsString({
-    message: 'Email must be a string',
-  })
+  @IsEmail(
+    {},
+    {
+      message: 'O email deve ser um endereço válido',
+    },
+  )
   email: string;
 
+  @ApiProperty({
+    description: 'Senha do usuário',
+    example: 'minhaSenhaSegura123',
+    minLength: 6,
+  })
   @IsNotEmpty({
-    message: 'Password is required',
+    message: 'A senha é obrigatória',
   })
   @IsString({
-    message: 'Password must be a string',
+    message: 'A senha deve ser uma string',
   })
   password: string;
 }
