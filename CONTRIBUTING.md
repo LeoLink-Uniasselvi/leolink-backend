@@ -225,7 +225,6 @@ export class UserDto {
 - **Response DTOs**: Sempre terminam com `.response.dto.ts` (dados de saída)
 - **DTOs comuns**: Ficam na pasta `shared/` e são reutilizáveis
 - **Organização**: Cada use-case tem sua própria pasta com seus DTOs específicos
-```
 
 #### 4. Controllers (OBRIGATÓRIO)
 
