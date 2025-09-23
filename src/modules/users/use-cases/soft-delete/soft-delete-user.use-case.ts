@@ -1,6 +1,8 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { IUserRepository } from '@/modules/users/repositories/user.repository';
 import { UserRepository } from '@/modules/users/repositories/user.repository';
+import { UserNotFoundException } from '@/modules/users/exceptions';
+import { BaseResponseDto } from '@/common/dtos';
 
 @Injectable()
 export class SoftDeleteUserUseCase {
@@ -9,19 +11,20 @@ export class SoftDeleteUserUseCase {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute(id: string) {
-    await this.userRepository.findById(id).then((user) => {
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-    });
+  async execute(id: string): Promise<BaseResponseDto<null>> {
+    const user = await this.userRepository.findById(id);
 
-    this.userRepository.delete(id).catch(() => {
-      throw new NotFoundException('User not found');
-    });
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    await this.userRepository.delete(id);
 
     return {
-      message: 'User deleted successfully',
+      data: null,
+      message: 'Usuário excluído com sucesso',
+      timestamp: new Date().toISOString(),
+      statusCode: 200,
     };
   }
 }
