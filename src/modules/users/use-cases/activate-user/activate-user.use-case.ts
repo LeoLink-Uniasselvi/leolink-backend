@@ -7,7 +7,7 @@ import {
   UserNotActiveException,
 } from '@/modules/users/exceptions';
 import { BaseResponseDto } from '@/common/dtos';
-import { UserDto } from '@/modules/users/dtos/shared/user.response.dto';
+import { UserDto } from '@/modules/users/dtos';
 
 @Injectable()
 export class ActivateUserUseCase {

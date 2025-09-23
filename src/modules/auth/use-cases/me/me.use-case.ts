@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseResponseDto } from '@/common/dtos';
-import { UserDto } from '@/modules/users/dtos/shared/user.response.dto';
+import { UserDto } from '@/modules/users/dtos';
 import { JwtPayload } from '@/modules/auth/types/jwt-payload.interface';
 
 @Injectable()

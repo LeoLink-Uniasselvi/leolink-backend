@@ -31,14 +31,14 @@ import {
 import {
   CreateUserFormDto,
   UpdateUserFormDto,
-  UserResponseDto,
-  PaginatedUsersResponseDto,
-  CreateUserRespDto,
-  UpdateUserRespDto,
+  GetUserResponseDto,
+  IndexUsersResponseDto,
+  CreateUserResponseDto,
+  UpdateUserResponseDto,
   DeleteUserResponseDto,
   ActivateUserResponseDto,
+  IndexUsersQueryDto,
 } from './dtos';
-import { IndexUsersQueryDto } from './dtos/index-users/index-users.query.dto';
 import { ErrorResponseDto, IdParamDto } from '@/common/dtos';
 
 @ApiTags('Usuários')
@@ -61,7 +61,7 @@ export class UsersController {
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CreateUserRespDto,
+    type: CreateUserResponseDto,
     description: 'Usuário criado com sucesso',
   })
   @ApiBadRequestResponse({
@@ -105,7 +105,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Usuários recuperados com sucesso',
-    type: PaginatedUsersResponseDto,
+    type: IndexUsersResponseDto,
   })
   @ApiBadRequestResponse({
     description: 'Parâmetros de paginação inválidos',
@@ -135,7 +135,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Usuário recuperado com sucesso',
-    type: UserResponseDto,
+    type: GetUserResponseDto,
   })
   @ApiNotFoundResponse({
     description: 'Usuário não encontrado',
@@ -168,7 +168,7 @@ export class UsersController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: UpdateUserRespDto,
+    type: UpdateUserResponseDto,
     description: 'Usuário atualizado com sucesso',
   })
   @ApiNotFoundResponse({

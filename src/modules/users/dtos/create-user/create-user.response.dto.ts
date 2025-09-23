@@ -1,4 +1,4 @@
-import { UserDto } from '@/modules/users/dtos/shared/user.response.dto';
+import { UserDto } from '@/modules/users/dtos';
 import { BaseResponseDto } from '@/common/dtos';
 
 export class CreateUserResponseDto extends BaseResponseDto<UserDto> {

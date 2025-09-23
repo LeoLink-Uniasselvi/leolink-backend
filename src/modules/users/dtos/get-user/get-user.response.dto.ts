@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BaseResponseDto } from '@/common/dtos';
 import { UserDto } from '../shared/user.response.dto';
 
-export class UserResponseDto extends BaseResponseDto<UserDto> {
+export class GetUserResponseDto extends BaseResponseDto<UserDto> {
   @ApiProperty({
     description: 'Dados do usuário',
     example: {

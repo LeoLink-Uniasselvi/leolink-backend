@@ -7,7 +7,7 @@ import { SessionRepository } from '@/modules/auth/repositories/session.repositor
 import { Session } from '@/modules/auth/entities/session.entity';
 import { UserAdapter } from '@/modules/users/user.adapter';
 import { PasswordHashingService } from '@/modules/auth/services/password-hashing.service';
-import type { LoginDataDto } from '@/modules/auth/dtos/login/login.response.dto';
+import type { LoginDataDto } from '@/modules/auth/dtos';
 import { InvalidCredentialsException } from '@/modules/auth/exceptions';
 import { BaseResponseDto } from '@/common/dtos';
 

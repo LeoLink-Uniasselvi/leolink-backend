@@ -3,8 +3,7 @@ import type { IUserRepository } from '@/modules/users/repositories/user.reposito
 import { UserRepository } from '@/modules/users/repositories/user.repository';
 import { UserAdapter } from '@/modules/users/user.adapter';
 import { BaseResponseDto } from '@/common/dtos';
-import { UserDto } from '@/modules/users/dtos/shared/user.response.dto';
-import { IndexUsersQueryDto } from '@/modules/users/dtos/index-users/index-users.query.dto';
+import { UserDto, IndexUsersQueryDto } from '@/modules/users/dtos';
 import {
   PaginatedDataDto,
   PaginationMetaDto,

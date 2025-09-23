@@ -1,4 +1,4 @@
-import { UserDto } from '@/modules/users/dtos/shared/user.response.dto';
+import { UserDto } from '@/modules/users/dtos';
 
 export interface JwtPayload {
   sub: string;

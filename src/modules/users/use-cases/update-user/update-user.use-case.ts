@@ -5,7 +5,7 @@ import { UpdateUserFormDto } from '@/modules/users/dtos';
 import { UserAdapter } from '@/modules/users/user.adapter';
 import { UserNotFoundException } from '@/modules/users/exceptions';
 import { BaseResponseDto } from '@/common/dtos';
-import { UserDto } from '@/modules/users/dtos/shared/user.response.dto';
+import { UserDto } from '@/modules/users/dtos';
 
 @Injectable()
 export class UpdateUserUseCase {

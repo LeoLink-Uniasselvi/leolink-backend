@@ -6,7 +6,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PasswordHashingService } from '@/modules/auth/services/password-hashing.service';
 import { UserAlreadyExistsException } from '@/modules/users/exceptions';
 import { BaseResponseDto } from '@/common/dtos';
-import { UserDto } from '@/modules/users/dtos/shared/user.response.dto';
+import { UserDto } from '@/modules/users/dtos';
 
 @Injectable()
 export class CreateUserUseCase {
