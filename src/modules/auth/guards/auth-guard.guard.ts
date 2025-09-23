@@ -3,7 +3,6 @@ import {
   ExecutionContext,
   Inject,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
@@ -11,6 +10,11 @@ import { IS_PUBLIC_KEY } from '@/modules/auth/decorators/public.decorator';
 import { GetSessionByToken } from '@/modules/auth/utils/get-session-by-token';
 import { JwtPayload } from '@/modules/auth/types/jwt-payload.interface';
 import { AuthenticatedRequest } from '@/modules/auth/types/authenticated-request.interface';
+import {
+  SessionNotFoundException,
+  SessionExpiredException,
+  InvalidCredentialsException,
+} from '@/modules/auth/exceptions';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -33,7 +37,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new InvalidCredentialsException('Token de acesso requerido');
     }
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
@@ -44,20 +48,27 @@ export class AuthGuard implements CanActivate {
       const session = await this.GetSessionByToken.execute(token);
 
       if (!session) {
-        throw new UnauthorizedException('Session not found');
+        throw new SessionNotFoundException();
       }
 
       if (session.revokedAt) {
-        throw new UnauthorizedException('Session has been revoked');
+        throw new SessionNotFoundException();
       }
 
       if (session.expiresAt && session.expiresAt < new Date()) {
-        throw new UnauthorizedException('Token has expired');
+        throw new SessionExpiredException();
       }
 
       request.session = session;
     } catch (error: unknown) {
-      throw new UnauthorizedException((error as Error).message);
+      if (
+        error instanceof InvalidCredentialsException ||
+        error instanceof SessionNotFoundException ||
+        error instanceof SessionExpiredException
+      ) {
+        throw error;
+      }
+      throw new InvalidCredentialsException('Token inválido');
     }
     return true;
   }
