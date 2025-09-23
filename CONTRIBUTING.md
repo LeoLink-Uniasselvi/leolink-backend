@@ -177,10 +177,6 @@ import { CreateUserDto } from './dtos/create-user.dto';
 ```
 
 #### 3. DTOs (OBRIGATÓRIO)
-
-```typescript
-#### 4. DTOs (OBRIGATÓRIO)
-
 ```typescript
 // ✅ CORRETO - DTOs organizados por use-case
 
