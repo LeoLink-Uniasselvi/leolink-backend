@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { ISessionRepository } from '@/modules/auth/repositories/session.repository';
 import { SessionRepository } from '@/modules/auth/repositories/session.repository';
+import { BaseResponseDto } from '@/common/dtos';
+import { SessionNotFoundException } from '@/modules/auth/exceptions';
 
 @Injectable()
 export class LogoutUseCase {
@@ -9,19 +11,19 @@ export class LogoutUseCase {
     private sessionRepository: ISessionRepository,
   ) {}
 
-  async execute(token: string) {
+  async execute(token: string): Promise<BaseResponseDto<null>> {
     const session = await this.sessionRepository.findByToken(token);
 
     if (!session) {
-      return {
-        message: 'User not found',
-      };
+      throw new SessionNotFoundException();
     }
 
     await this.sessionRepository.delete(session.id);
 
     return {
-      message: 'User logged out successfully',
+      message: 'Logout realizado com sucesso',
+      timestamp: new Date().toISOString(),
+      statusCode: 200,
     };
   }
 }

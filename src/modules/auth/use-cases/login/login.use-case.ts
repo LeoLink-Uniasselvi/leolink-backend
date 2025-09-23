@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { IUserRepository } from '@/modules/users/repositories/user.repository';
 import { UserRepository } from '@/modules/users/repositories/user.repository';
@@ -7,6 +7,9 @@ import { SessionRepository } from '@/modules/auth/repositories/session.repositor
 import { Session } from '@/modules/auth/entities/session.entity';
 import { UserAdapter } from '@/modules/users/user.adapter';
 import { PasswordHashingService } from '@/modules/auth/services/password-hashing.service';
+import type { LoginDataDto } from '@/modules/auth/dtos/login/login.response.dto';
+import { InvalidCredentialsException } from '@/modules/auth/exceptions';
+import { BaseResponseDto } from '@/common/dtos';
 
 @Injectable()
 export class LoginUseCase {
@@ -21,11 +24,14 @@ export class LoginUseCase {
     private readonly passwordHashingService: PasswordHashingService,
   ) {}
 
-  async execute(email: string, password: string) {
+  async execute(
+    email: string,
+    password: string,
+  ): Promise<BaseResponseDto<LoginDataDto>> {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new InvalidCredentialsException();
     }
 
     const passwordMatch = await this.passwordHashingService.verifyPassword(
@@ -34,7 +40,7 @@ export class LoginUseCase {
     );
 
     if (!passwordMatch) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new InvalidCredentialsException();
     }
 
     const token = await this.tokenService.signAsync({
@@ -52,8 +58,16 @@ export class LoginUseCase {
     await this.sessionRepository.create(session);
 
     return {
-      message: 'User logged in successfully',
-      token: token,
+      data: {
+        token,
+        tokenType: 'bearer',
+        expiresAt,
+        refreshToken: null,
+        user: this.userAdapter.convertToDto(user),
+      },
+      message: 'Login realizado com sucesso',
+      timestamp: new Date().toISOString(),
+      statusCode: 200,
     };
   }
 }
