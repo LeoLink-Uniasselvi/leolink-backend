@@ -1,10 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsOptional, IsNumber, Min, Max, IsString } from 'class-validator';
+import { BaseResponseDto } from './base-response.dto';
 
 export class PaginationQueryDto {
   @ApiPropertyOptional({
-    description: 'Page number',
+    description: 'Número da página',
     example: 1,
     minimum: 1,
     default: 1,
@@ -16,7 +17,7 @@ export class PaginationQueryDto {
   page: number = 1;
 
   @ApiPropertyOptional({
-    description: 'Number of items per page',
+    description: 'Número de itens por página',
     example: 10,
     minimum: 1,
     maximum: 100,
@@ -30,8 +31,8 @@ export class PaginationQueryDto {
   limit: number = 10;
 
   @ApiPropertyOptional({
-    description: 'Search term',
-    example: 'search term',
+    description: 'Termo de busca',
+    example: 'termo de busca',
   })
   @IsOptional()
   @IsString({ message: 'Search must be a string' })
@@ -41,23 +42,79 @@ export class PaginationQueryDto {
   search?: string;
 }
 
-export class PaginatedDto<T> {
-  @ApiProperty({ example: 1, readOnly: true })
+export class PaginationMetaDto {
+  @ApiProperty({
+    example: 1,
+    readOnly: true,
+    description: 'Número da página atual',
+  })
   page!: number;
 
-  @ApiProperty({ example: 10, readOnly: true })
+  @ApiProperty({
+    example: 10,
+    readOnly: true,
+    description: 'Número de itens por página',
+  })
   limit!: number;
 
-  @ApiProperty({ example: 50, readOnly: true })
+  @ApiProperty({
+    example: 50,
+    readOnly: true,
+    description: 'Número total de itens',
+  })
   total!: number;
 
-  @ApiProperty({ example: 5, readOnly: true })
+  @ApiProperty({
+    example: 5,
+    readOnly: true,
+    description: 'Número total de páginas',
+  })
   totalPages!: number;
 
-  @ApiProperty({ readOnly: true })
-  data!: T[];
+  @ApiProperty({
+    example: true,
+    readOnly: true,
+    description: 'Indica se existe uma próxima página',
+  })
+  hasNext!: boolean;
 
-  constructor(init?: Partial<PaginatedDto<T>>) {
-    Object.assign(this, init);
+  @ApiProperty({
+    example: false,
+    readOnly: true,
+    description: 'Indica se existe uma página anterior',
+  })
+  hasPrevious!: boolean;
+}
+
+export class PaginatedDataDto<T> {
+  @ApiProperty({
+    readOnly: true,
+    description: 'Array de itens',
+  })
+  items!: T[];
+
+  @ApiProperty({
+    type: PaginationMetaDto,
+    readOnly: true,
+    description: 'Metadados de paginação',
+  })
+  meta!: PaginationMetaDto;
+
+  constructor(items: T[], meta: PaginationMetaDto) {
+    this.items = items;
+    this.meta = meta;
+  }
+}
+
+export class PaginatedResponseDto<T> extends BaseResponseDto<
+  PaginatedDataDto<T>
+> {
+  constructor(
+    items: T[],
+    meta: PaginationMetaDto,
+    message: string = 'Dados recuperados com sucesso',
+    statusCode: number = 200,
+  ) {
+    super(new PaginatedDataDto(items, meta), message, statusCode);
   }
 }
