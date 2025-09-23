@@ -8,7 +8,10 @@ export { UpdateUserResponseDto } from './update-user/update-user.response.dto';
 
 //Index
 export { IndexUsersQueryDto } from './index-users/index-users.query.dto';
-export { IndexUsersResponseDto, PaginatedUsersDataDto } from './index-users/index-users.response.dto';
+export {
+  IndexUsersResponseDto,
+  PaginatedUsersDataDto,
+} from './index-users/index-users.response.dto';
 
 //Get User
 export { GetUserResponseDto } from './get-user/get-user.response.dto';
@@ -16,7 +19,7 @@ export { GetUserResponseDto } from './get-user/get-user.response.dto';
 //Delete User
 export { DeleteUserResponseDto } from './delete-user/delete-user.response.dto';
 
-//Activate User  
+//Activate User
 export { ActivateUserResponseDto } from './activate-user/activate-user.response.dto';
 
 //Shared
