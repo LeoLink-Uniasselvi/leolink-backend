@@ -1,98 +1,228 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# LeoLink Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<div align="center">
+  <h3>Uma rede social voltada para o mundo acadêmico</h3>
+  <p>Desenvolvida pelos alunos da Uniasselvi - Turmas: EGS0011, EGS0016 e EGS0019</p>
+</div>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 Sobre o Projeto
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+O **LeoLink** é uma plataforma de rede social desenvolvida especificamente para o ambiente acadêmico, permitindo que estudantes, professores e pesquisadores se conectem, compartilhem conhecimento e colaborem em projetos educacionais.
 
-## Project setup
+Este repositório contém o backend da aplicação, desenvolvido com as mais modernas tecnologias para garantir performance, escalabilidade e segurança.
 
-```bash
-$ npm install
+## 🛠️ Tecnologias Utilizadas
+
+### Backend
+- **[Node.js](https://nodejs.org/)** - Runtime JavaScript
+- **[NestJS](https://nestjs.com/)** - Framework Node.js progressivo para aplicações server-side
+- **[TypeScript](https://www.typescriptlang.org/)** - Superset JavaScript com tipagem estática
+- **[TypeORM](https://typeorm.io/)** - ORM para TypeScript/JavaScript
+
+### Banco de Dados
+- **[PostgreSQL](https://www.postgresql.org/)** - Sistema de gerenciamento de banco de dados relacional
+
+### Autenticação & Segurança
+- **[JWT](https://jwt.io/)** - JSON Web Tokens para autenticação
+- **[@node-rs/argon2](https://github.com/napi-rs/node-rs)** - Hash de senhas com Argon2
+
+### Validação & Documentação
+- **[Class-validator](https://github.com/typestack/class-validator)** - Validação baseada em decorators
+- **[Class-transformer](https://github.com/typestack/class-transformer)** - Transformação de objetos
+- **[Swagger/OpenAPI](https://swagger.io/)** - Documentação automática da API
+
+### DevOps & Deployment
+- **[Docker](https://www.docker.com/)** - Containerização
+- **[Docker Compose](https://docs.docker.com/compose/)** - Orquestração de containers
+
+### Ferramentas de Desenvolvimento
+- **[ESLint](https://eslint.org/)** - Linting de código
+- **[Prettier](https://prettier.io/)** - Formatação de código
+- **[Jest](https://jestjs.io/)** - Framework de testes
+- **[Husky](https://typicode.github.io/husky/)** - Git hooks
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── common/           # Utilitários compartilhados
+│   ├── decorators/   # Decorators customizados
+│   ├── dtos/         # Data Transfer Objects base
+│   ├── entities/     # Entidades base
+│   ├── exceptions/   # Exceções customizadas
+│   ├── filters/      # Filtros globais
+│   ├── interceptors/ # Interceptors globais
+│   └── repositories/ # Repositórios base
+├── modules/          # Módulos da aplicação
+│   ├── auth/         # Módulo de autenticação
+│   │   └── dtos/     # DTOs específicos do auth
+│   │       ├── login/        # DTOs do login
+│   │       ├── logout/       # DTOs do logout
+│   │       ├── me/           # DTOs do perfil
+│   │       └── change-password/ # DTOs de mudança de senha
+│   └── users/        # Módulo de usuários
+│       └── dtos/     # DTOs específicos de usuários
+│           ├── create-user/     # DTOs de criação
+│           ├── update-user/     # DTOs de atualização
+│           ├── get-user/        # DTOs de busca
+│           ├── index-users/     # DTOs de listagem
+│           ├── delete-user/     # DTOs de exclusão
+│           ├── activate-user/   # DTOs de ativação
+│           └── shared/          # DTOs comuns (UserDto)
+├── app.module.ts     # Módulo principal
+└── main.ts          # Arquivo de entrada
 ```
 
-## Compile and run the project
+## 🔧 Funcionalidades
+
+### Autenticação
+- ✅ Login com JWT
+- ✅ Logout seguro
+- ✅ Proteção de rotas
+- ✅ Hash de senhas com Argon2
+
+### Gerenciamento de Usuários
+- ✅ Criação de usuários
+- ✅ Ativação de conta
+- ✅ Atualização de perfil
+- ✅ Exclusão lógica (soft delete)
+- ✅ Listagem paginada
+
+### Arquitetura
+- ✅ Clean Architecture
+- ✅ Repository Pattern
+- ✅ Use Cases
+- ✅ DTOs para validação
+- ✅ Tratamento global de exceções
+- ✅ Interceptors para formatação de resposta
+
+## 📋 Pré-requisitos
+
+Antes de começar, você precisará ter instalado em sua máquina:
+
+- [Node.js](https://nodejs.org/) (v22.16.0 é a indicada)
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
+- [Git](https://git-scm.com/)
+
+## 🚀 Instalação e Execução
+
+### 1. Clone o repositório
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/LeoLink-Uniasselvi/leolink-backend.git
+cd leolink-backend
 ```
 
-## Run tests
+### 2. Instale as dependências
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+### 3. Configure as variáveis de ambiente
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Crie um arquivo `.env` na raiz do projeto com base no exemplo:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env
+# Configurações da Aplicação
+APP_PORT=5000
+NODE_ENV=development
+
+# Configurações do Banco de Dados
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=leolink
+DB_PASS=leolink123
+DB_NAME=leolink
+DB_LOGGING=true
+
+# Configurações JWT
+JWT_SECRET=seu_jwt_secret_super_seguro_aqui
+```
+
+### 4. Execute o projeto
+
+#### Opção 1: Usando o script de desenvolvimento (Recomendado)
+```bash
+chmod +x dev.sh
+./dev.sh
+```
+
+#### Opção 2: Passo a passo
+```bash
+# Subir o banco de dados
+docker compose up db -d
+
+# Executar a aplicação em modo desenvolvimento
+npm run start:dev
+```
+
+### 5. Acesse a aplicação
+
+- **API**: http://localhost:5000
+- **Documentação (Swagger)**: http://localhost:5000/docs
+
+## 📚 Scripts Disponíveis
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Desenvolvimento
+npm run start:dev      # Inicia em modo desenvolvimento com hot reload
+npm run start:debug    # Inicia em modo debug
+
+# Build e Produção
+npm run build          # Compila o projeto
+npm run start:prod     # Inicia em modo produção
+
+# Qualidade de Código
+npm run lint           # Executa o ESLint
+npm run format         # Formata o código com Prettier
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🐳 Docker
 
-## Resources
+### Executar com Docker Compose
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+# Subir todos os serviços
+docker compose up
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Subir em background
+docker compose up -d
 
-## Support
+# Parar os serviços
+docker compose down
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Rebuild dos containers
+docker compose up --build
+```
 
-## Stay in touch
+## 📖 Documentação da API
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+A documentação completa da API está disponível através do Swagger UI em:
+http://localhost:5000/docs
 
-## License
+A documentação inclui:
+- Todos os endpoints disponíveis
+- Modelos de dados
+- Exemplos de requisições e respostas
+- Autenticação JWT
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🤝 Como Contribuir
+
+Consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para informações detalhadas sobre como contribuir com o projeto.
+
+## 📄 Licença
+
+Este projeto é privado e desenvolvido para fins acadêmicos pela Uniasselvi.
+
+## 👥 Equipe
+
+Desenvolvido pelos alunos das turmas EGS0011, EGS0016 e EGS0019 da Uniasselvi.
+
+---
+
+<div align="center">
+  <p>Feito com ❤️ pelos alunos da Uniasselvi</p>
+</div>
