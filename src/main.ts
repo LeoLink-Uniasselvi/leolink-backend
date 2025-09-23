@@ -14,11 +14,31 @@ async function bootstrap() {
       'Uma rede social voltada para o mundo acadêmico. Desenvolvida pelos alunos da Uniasselvi. Turmas: EGS0011, EGS0016 e EGS0016.',
     )
     .setVersion('0.1')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Insira o token JWT',
+        in: 'header',
+      },
+      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controller!
+    )
+    .addTag('Autenticação', 'Endpoints de autenticação')
+    .addTag('Usuários', 'Endpoints de gerenciamento de usuários')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
 
   const port = process.env.APP_PORT || 3000;
   await app.listen(port);
