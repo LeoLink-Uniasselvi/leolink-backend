@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { UserDto } from './dtos';
 import { CreateUserFormDto } from './dtos';
+import { RegisterFormDto } from '@/modules/auth/dtos';
 
 @Injectable()
 export class UserAdapter {
@@ -16,7 +17,7 @@ export class UserAdapter {
     return userDto;
   }
 
-  convertCreateUserDtoToEntity(dto: CreateUserFormDto): User {
+  convertCreateUserDtoToEntity(dto: CreateUserFormDto | RegisterFormDto): User {
     return new User(dto.name, dto.email, dto.password);
   }
 }

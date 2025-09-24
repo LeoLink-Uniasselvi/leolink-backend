@@ -12,8 +12,10 @@ import {
   LoginResponseDto,
   LogoutResponseDto,
   MeResponseDto,
+  RegisterFormDto,
+  RegisterResponseDto,
 } from './dtos';
-import { LoginUseCase, LogoutUseCase, MeUseCase } from './use-cases';
+import { LoginUseCase, LogoutUseCase, MeUseCase, RegisterUseCase } from './use-cases';
 import { Public, GetUser, GetJwt } from './decorators';
 import type { JwtPayload } from './types/jwt-payload.interface';
 import { ErrorResponseDto } from '@/common/dtos';
@@ -25,6 +27,7 @@ export class AuthController {
     private loginUseCase: LoginUseCase,
     private logoutUseCase: LogoutUseCase,
     private meUseCase: MeUseCase,
+    private registerUseCase: RegisterUseCase,
   ) {}
 
   @Post('login')
@@ -48,6 +51,25 @@ export class AuthController {
   })
   login(@Body() loginDto: LoginFormDto) {
     return this.loginUseCase.execute(loginDto.email, loginDto.password);
+  }
+
+  @Post('register')
+  @Public()
+  @ApiOperation({
+    summary: 'Registro de usuário',
+    description: 'Registra um novo usuário no sistema',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: RegisterResponseDto,
+    description: 'Usuário registrado com sucesso',
+  })
+  @ApiBadRequestResponse({
+    description: 'Dados de entrada inválidos ou email já existe',
+    type: ErrorResponseDto,
+  })
+  register(@Body() registerDto: RegisterFormDto) {
+    return this.registerUseCase.execute(registerDto);
   }
 
   @Post('logout')
