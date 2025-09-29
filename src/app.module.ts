@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { HealthController } from './health.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@/modules/users/users.module';
@@ -37,7 +38,7 @@ import { ResponseInterceptor } from '@/common/interceptors';
     UsersModule,
     AuthModule,
   ] as const,
-  controllers: [],
+  controllers: [HealthController],
   providers: [
     {
       provide: APP_GUARD,
