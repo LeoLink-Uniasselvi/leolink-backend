@@ -1,8 +1,8 @@
 services:
   app:
     build:
-      context: ./docker/node
-      dockerfile: dockerfile
+      context: .
+      dockerfile: ./docker/node/dockerfile
     env_file:
       - .env
     ports:
