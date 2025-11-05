@@ -9,9 +9,10 @@ import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from 'src/modules/auth/guards/auth-guard.guard';
 import { GlobalExceptionFilter } from '@/common/filters';
 import { ResponseInterceptor } from '@/common/interceptors';
+import { CoursesModule } from '@/modules/courses/courses.module';
 
 @Module({
-  imports: [
+  imports: [ CoursesModule, 
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
@@ -55,3 +56,6 @@ import { ResponseInterceptor } from '@/common/interceptors';
   ],
 })
 export class AppModule {}
+
+
+

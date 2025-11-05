@@ -35,6 +35,16 @@ export class AuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+
+    // Allow Swagger UI and JSON docs without authentication
+    const path = request?.url ?? '';
+    if (
+      path.startsWith('/docs') ||
+      path === '/docs-json' ||
+      path.startsWith('/swagger-ui')
+    ) {
+      return true;
+    }
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new InvalidCredentialsException('Token de acesso requerido');
