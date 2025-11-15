@@ -1,0 +1,47 @@
+{
+    "scripts": {
+        "dev": "ts-node-dev src/index.ts",
+        "build": "tsc",
+        "start": "node dist/index.js"
+    },
+    "compilerOptions": {
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "allowImportingTsExtensions": true,
+        "target": "ES2020",
+        "module": "commonjs",
+        "lib": [
+            "ES2020"
+        ],
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "@entities/*": [
+                "src/entities/*"
+            ],
+            "@database/*": [
+                "src/database/*"
+            ],
+            "@repositories/*": [
+                "src/repositories/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
