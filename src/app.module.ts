@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@/modules/users/users.module';
 import { AuthModule } from '@/modules/auth/auth.module';
+import { CommentsModule } from '@/modules/comments/comments.module';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from 'src/modules/auth/guards/auth-guard.guard';
@@ -37,6 +38,7 @@ import { ResponseInterceptor } from '@/common/interceptors';
     }),
     UsersModule,
     AuthModule,
+    CommentsModule,
   ] as const,
   controllers: [HealthController],
   providers: [
