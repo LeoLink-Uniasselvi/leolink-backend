@@ -5,11 +5,13 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@/modules/users/users.module';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { CommentsModule } from '@/modules/comments/comments.module';
+import { LikesModule } from '@/modules/likes/likes.module';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from 'src/modules/auth/guards/auth-guard.guard';
 import { GlobalExceptionFilter } from '@/common/filters';
 import { ResponseInterceptor } from '@/common/interceptors';
+import { RolesModule } from '@/modules/roles/roles.module';
 
 @Module({
   imports: [
@@ -37,8 +39,10 @@ import { ResponseInterceptor } from '@/common/interceptors';
       },
     }),
     UsersModule,
+    RolesModule,
     AuthModule,
     CommentsModule,
+    LikesModule,
   ] as const,
   controllers: [HealthController],
   providers: [
