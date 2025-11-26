@@ -10,6 +10,7 @@ import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from 'src/modules/auth/guards/auth-guard.guard';
 import { GlobalExceptionFilter } from '@/common/filters';
 import { ResponseInterceptor } from '@/common/interceptors';
+import { RolesModule } from '@/modules/roles/roles.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ResponseInterceptor } from '@/common/interceptors';
       },
     }),
     UsersModule,
+    RolesModule,
     AuthModule,
     LikesModule,
   ] as const,
