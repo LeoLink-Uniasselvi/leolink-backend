@@ -4,8 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@/modules/users/users.module';
 import { AuthModule } from '@/modules/auth/auth.module';
-import { CommentsModule } from '@/modules/comments/comments.module';
-import { LikesModule } from '@/modules/likes/likes.module';
+import { FollowsModule } from '@/modules/follows/follows.module';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from 'src/modules/auth/guards/auth-guard.guard';
@@ -41,8 +40,7 @@ import { RolesModule } from '@/modules/roles/roles.module';
     UsersModule,
     RolesModule,
     AuthModule,
-    CommentsModule,
-    LikesModule,
+    FollowsModule,
   ] as const,
   controllers: [HealthController],
   providers: [
