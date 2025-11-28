@@ -34,7 +34,7 @@ import { HealthController } from './health.controller';
             rejectUnauthorized: false, // Necessário para Render
           } : false,
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: !isProduction, // Apenas em desenvolvimento
+          synchronize: true, // TEMPORÁRIO: Ativado para criar tabelas no primeiro deploy
           logging: configService.get('DB_LOGGING') === 'true',
         };
       },
