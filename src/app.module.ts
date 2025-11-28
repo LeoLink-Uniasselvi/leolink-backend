@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_GUARD } from '@nestjs/core';
 import { PostsModule } from './modules/posts/posts.module';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
@@ -8,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CommentsModule } from './modules/comments/comments.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { HealthController } from './health.controller';
+import { AuthGuard } from './modules/auth/guards/auth-guard.guard';
 
 @Module({
   imports: [
@@ -47,5 +49,11 @@ import { HealthController } from './health.controller';
     LikesModule,
   ],
   controllers: [HealthController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

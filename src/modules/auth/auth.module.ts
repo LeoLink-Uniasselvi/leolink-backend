@@ -11,6 +11,7 @@ import { Session } from './entities/session.entity';
 import { GetSessionByToken } from './utils/get-session-by-token';
 import { UserAdapter } from '@/modules/users/user.adapter';
 import { PasswordHashingService } from './services/password-hashing.service';
+import { AuthGuard } from './guards/auth-guard.guard';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { PasswordHashingService } from './services/password-hashing.service';
     GetSessionByToken,
     UserAdapter,
     PasswordHashingService,
+    AuthGuard,
   ],
-  exports: [UserRepository, GetSessionByToken, PasswordHashingService],
+  exports: [UserRepository, GetSessionByToken, PasswordHashingService, JwtModule, AuthGuard],
 })
 export class AuthModule {}

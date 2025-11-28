@@ -14,21 +14,15 @@ import {
 } from './use-cases';
 import { PostAdapter } from './post.adapter';
 import { UsersModule } from '@/modules/users/users.module';
-import { Like } from '@/modules/likes/entities/like.entity';
-import { LikeRepository } from '@/modules/likes/repositories/like.repository';
-import { Comment } from '@/modules/comments/entities/comment.entity';
-import { CommentRepository } from '@/modules/comments/repositories/comment.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Post, Like, Comment]),
+    TypeOrmModule.forFeature([Post]),
     forwardRef(() => UsersModule),
   ],
   controllers: [PostsController],
   providers: [
     PostRepository,
-    LikeRepository,
-    CommentRepository,
     CreatePostUseCase,
     GetPostUseCase,
     IndexPostsUseCase,
