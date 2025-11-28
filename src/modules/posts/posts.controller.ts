@@ -98,7 +98,7 @@ export class PostsController {
     @Query('limit') limit: number = 10,
     @GetUser() user: JwtPayload,
   ) {
-    const result = await this.getUserPostsUseCase.execute(params.userId, +page, +limit);
+    const result = await this.getUserPostsUseCase.execute(userId, +page, +limit);
     return {
       items: await this.postAdapter.toDtoArray(result.posts, user.sub),
       meta: {
