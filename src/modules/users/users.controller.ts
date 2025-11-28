@@ -19,6 +19,7 @@ import {
   ApiNotFoundResponse,
   ApiQuery,
   ApiForbiddenResponse,
+  ApiConflictResponse,
 } from '@nestjs/swagger';
 import {
   CreateUserUseCase,
@@ -27,6 +28,11 @@ import {
   UpdateUserUseCase,
   SoftDeleteUserUseCase,
   ActivateUserUseCase,
+  FollowUserUseCase,
+  UnfollowUserUseCase,
+  GetFollowersUseCase,
+  GetFollowingUseCase,
+  GetFollowStatsUseCase,
 } from './use-cases';
 import {
   CreateUserFormDto,
@@ -40,6 +46,8 @@ import {
   IndexUsersQueryDto,
 } from './dtos';
 import { ErrorResponseDto, IdParamDto } from '@/common/dtos';
+import { GetUser } from '@/modules/auth/decorators';
+import { User } from './entities/user.entity';
 
 @ApiTags('Usuários')
 @ApiBearerAuth('JWT-auth')
@@ -52,6 +60,11 @@ export class UsersController {
     private updateUserUseCase: UpdateUserUseCase,
     private softDeleteUserUseCase: SoftDeleteUserUseCase,
     private activateUserUseCase: ActivateUserUseCase,
+    private followUserUseCase: FollowUserUseCase,
+    private unfollowUserUseCase: UnfollowUserUseCase,
+    private getFollowersUseCase: GetFollowersUseCase,
+    private getFollowingUseCase: GetFollowingUseCase,
+    private getFollowStatsUseCase: GetFollowStatsUseCase,
   ) {}
 
   @Post()
@@ -252,5 +265,144 @@ export class UsersController {
   })
   activate(@Param() params: IdParamDto) {
     return this.activateUserUseCase.execute(params.id);
+  }
+
+  // ==================== FOLLOW ENDPOINTS ====================
+
+  @Post(':id/follow')
+  @ApiOperation({
+    summary: 'Seguir usuário',
+    description: 'Começa a seguir um usuário',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Usuário seguido com sucesso',
+  })
+  @ApiNotFoundResponse({
+    description: 'Usuário não encontrado',
+    type: ErrorResponseDto,
+  })
+  @ApiConflictResponse({
+    description: 'Já está seguindo este usuário',
+    type: ErrorResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Não pode seguir a si mesmo',
+    type: ErrorResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Token inválido ou ausente',
+    type: ErrorResponseDto,
+  })
+  follow(@Param() params: IdParamDto, @GetUser() user: User) {
+    return this.followUserUseCase.execute(user.id, params.id);
+  }
+
+  @Delete(':id/follow')
+  @ApiOperation({
+    summary: 'Deixar de seguir usuário',
+    description: 'Para de seguir um usuário',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Deixou de seguir com sucesso',
+  })
+  @ApiNotFoundResponse({
+    description: 'Não está seguindo este usuário',
+    type: ErrorResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Token inválido ou ausente',
+    type: ErrorResponseDto,
+  })
+  unfollow(@Param() params: IdParamDto, @GetUser() user: User) {
+    return this.unfollowUserUseCase.execute(user.id, params.id);
+  }
+
+  @Get(':id/followers')
+  @ApiOperation({
+    summary: 'Listar seguidores',
+    description: 'Obtém lista paginada de seguidores de um usuário',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Número da página',
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Itens por página',
+    example: 10,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Seguidores obtidos com sucesso',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Token inválido ou ausente',
+    type: ErrorResponseDto,
+  })
+  getFollowers(
+    @Param() params: IdParamDto,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.getFollowersUseCase.execute(params.id, +page, +limit);
+  }
+
+  @Get(':id/following')
+  @ApiOperation({
+    summary: 'Listar seguindo',
+    description: 'Obtém lista paginada de usuários que este usuário segue',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Número da página',
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Itens por página',
+    example: 10,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Lista de seguindo obtida com sucesso',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Token inválido ou ausente',
+    type: ErrorResponseDto,
+  })
+  getFollowing(
+    @Param() params: IdParamDto,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.getFollowingUseCase.execute(params.id, +page, +limit);
+  }
+
+  @Get(':id/follow-stats')
+  @ApiOperation({
+    summary: 'Estatísticas de follow',
+    description: 'Obtém contagem de seguidores e seguindo de um usuário',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Estatísticas obtidas com sucesso',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Token inválido ou ausente',
+    type: ErrorResponseDto,
+  })
+  getFollowStats(@Param() params: IdParamDto, @GetUser() user: User) {
+    return this.getFollowStatsUseCase.execute(params.id, user?.id);
   }
 }

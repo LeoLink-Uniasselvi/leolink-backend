@@ -1,0 +1,36 @@
+services:
+  # Backend API
+  - type: web
+    name: leolink-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 5432
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        sync: false
+      - key: DB_LOGGING
+        value: false
+
+  # PostgreSQL Database
+  - type: pgsql
+    name: leolink-db
+    plan: free
+    databaseName: leolink
+    ipAllowList: []

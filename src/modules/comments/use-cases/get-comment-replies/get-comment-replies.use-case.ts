@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CommentRepository, ICommentRepository } from '@/modules/comments/repositories/comment.repository';
+import { CommentRepository, type ICommentRepository } from '@/modules/comments/repositories/comment.repository';
 import { CommentAdapter } from '@/modules/comments/comment.adapter';
 import { CommentDto } from '@/modules/comments/dtos';
 import { BaseResponseDto } from '@/common/dtos';

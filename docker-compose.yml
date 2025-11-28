@@ -32,7 +32,7 @@ services:
         protocol: tcp
         mode: host
     volumes:
-      - ./docker/postgres/data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $DB_USER -p 5432"]
       interval: 10s
@@ -40,6 +40,10 @@ services:
       retries: 5
     networks:
       - leolink-network
+
+volumes:
+  postgres_data:
+    driver: local
 
 networks:
   leolink-network:

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from '@/modules/comments/entities/comment.entity';
-import { CommentRepository, ICommentRepository } from '@/modules/comments/repositories/comment.repository';
+import { CommentRepository, type ICommentRepository } from '@/modules/comments/repositories/comment.repository';
 import { CommentAdapter } from '@/modules/comments/comment.adapter';
 import { Post } from '@/modules/posts/entities/post.entity';
 import { BaseResponseDto } from '@/common/dtos';

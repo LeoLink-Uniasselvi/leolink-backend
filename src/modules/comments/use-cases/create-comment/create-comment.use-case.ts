@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommentRepository, ICommentRepository } from '@/modules/comments/repositories/comment.repository';
+import { CommentRepository, type ICommentRepository } from '@/modules/comments/repositories/comment.repository';
 import { CommentAdapter } from '@/modules/comments/comment.adapter';
 import { CreateCommentFormDto } from '@/modules/comments/dtos';
 import { CommentDto } from '@/modules/comments/dtos';

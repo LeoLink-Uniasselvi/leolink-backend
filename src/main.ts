@@ -8,6 +8,14 @@ async function bootstrap() {
   await ConfigModule.forRoot();
   const app = await NestFactory.create(AppModule);
 
+  // Habilitar CORS
+  app.enableCors({
+    origin: process.env.CORS_ORIGIN 
+      ? process.env.CORS_ORIGIN.split(',') 
+      : ['http://localhost:3000'],
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('LeoLink')
     .setDescription(
@@ -27,6 +35,9 @@ async function bootstrap() {
     )
     .addTag('Autenticação', 'Endpoints de autenticação')
     .addTag('Usuários', 'Endpoints de gerenciamento de usuários')
+    .addTag('Posts', 'Endpoints de gerenciamento de posts')
+    .addTag('Comentários', 'Endpoints de gerenciamento de comentários')
+    .addTag('Likes', 'Endpoints de gerenciamento de likes')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
@@ -40,8 +51,8 @@ async function bootstrap() {
     }),
   );
 
-  const port = process.env.APP_PORT || 3000;
-  await app.listen(port);
+  const port = process.env.PORT || process.env.APP_PORT || 5000;
+  await app.listen(port, '0.0.0.0');
   console.log(`Aplicação está rodando na porta ${port}`);
   console.log(`Swagger disponível em: http://localhost:${port}/docs`);
 }
