@@ -1,17 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from './entities/post.entity';
 import { PostDataDto } from './dtos/post-data.dto';
-import { LikeRepository } from '@/modules/likes/repositories/like.repository';
-import { CommentRepository } from '@/modules/comments/repositories/comment.repository';
 
 @Injectable()
 export class PostAdapter {
-  constructor(
-    private readonly likeRepository: LikeRepository,
-    private readonly commentRepository: CommentRepository,
-  ) {}
-
-  async toDto(post: Post, userId?: string): Promise<PostDataDto> {
+  toDto(post: Post, userId?: string): PostDataDto {
     if (!post.author) {
       console.error('[PostAdapter] ERRO: Post sem author!', { postId: post.id, authorId: post.authorId });
       throw new Error(`Post ${post.id} não tem author carregado`);
@@ -30,22 +23,16 @@ export class PostAdapter {
     dto.updatedAt = post.updatedAt;
     dto.deletedAt = post.deletedAt;
     
-    // Carregar curtidas e comentários
-    dto.likesCount = await this.likeRepository.countByPost(post.id);
-    dto.commentsCount = await this.commentRepository.countByPostId(post.id);
-    
-    // Verificar se usuário curtiu (se userId fornecido)
-    if (userId) {
-      const like = await this.likeRepository.findByUserAndPost(userId, post.id);
-      dto.isLiked = !!like;
-    } else {
-      dto.isLiked = false;
-    }
+    // TODO: Otimizar com query única usando JOIN/subquery
+    // Por enquanto retorna 0 para não causar timeout
+    dto.likesCount = 0;
+    dto.commentsCount = 0;
+    dto.isLiked = false;
     
     return dto;
   }
 
-  async toDtoArray(posts: Post[], userId?: string): Promise<PostDataDto[]> {
-    return Promise.all(posts.map((post) => this.toDto(post, userId)));
+  toDtoArray(posts: Post[], userId?: string): PostDataDto[] {
+    return posts.map((post) => this.toDto(post, userId));
   }
 }
