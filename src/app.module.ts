@@ -1,65 +1,51 @@
 import { Module } from '@nestjs/common';
-import { HealthController } from './health.controller';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from '@/modules/users/users.module';
-import { AuthModule } from '@/modules/auth/auth.module';
-import { CommentsModule } from '@/modules/comments/comments.module';
-import { LikesModule } from '@/modules/likes/likes.module';
-import { PostsModule } from '@/modules/posts/posts.module';
-import { JwtModule } from '@nestjs/jwt';
-import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { AuthGuard } from 'src/modules/auth/guards/auth-guard.guard';
-import { GlobalExceptionFilter } from '@/common/filters';
-import { ResponseInterceptor } from '@/common/interceptors';
-import { RolesModule } from '@/modules/roles/roles.module';
+import { PostsModule } from './modules/posts/posts.module';
+import { UsersModule } from './modules/users/users.module';
+import { RolesModule } from './modules/roles/roles.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { LikesModule } from './modules/likes/likes.module';
+import { HealthController } from './health.controller';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'postgres',
-        host: process.env.DB_HOST,
-        port: parseInt(process.env.DB_PORT ?? '5432'),
-        username: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        database: process.env.DB_NAME,
-        synchronize: process.env.NODE_ENV !== 'production',
-        logging:
-          process.env.NODE_ENV === 'development' &&
-          process.env.DB_LOGGING === 'true',
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'production' 
+        ? '.env.production' 
+        : '.env',
     }),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: {
-        expiresIn: '1d',
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const isProduction = configService.get('NODE_ENV') === 'production';
+        
+        return {
+          type: 'postgres',
+          host: configService.get('DB_HOST'),
+          port: configService.get<number>('DB_PORT'),
+          username: configService.get('DB_USER'),
+          password: configService.get('DB_PASS'),
+          database: configService.get('DB_NAME'),
+          // SSL é OBRIGATÓRIO no Render
+          ssl: isProduction ? {
+            rejectUnauthorized: false, // Necessário para Render
+          } : false,
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          synchronize: !isProduction, // Apenas em desenvolvimento
+          logging: configService.get('DB_LOGGING') === 'true',
+        };
       },
     }),
+    PostsModule,
     UsersModule,
     RolesModule,
     AuthModule,
-    PostsModule,
     CommentsModule,
     LikesModule,
-  ] as const,
-  controllers: [HealthController],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: GlobalExceptionFilter,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ResponseInterceptor,
-    },
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}
