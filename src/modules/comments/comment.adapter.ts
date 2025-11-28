@@ -15,10 +15,20 @@ export class CommentAdapter {
    * `includeReplies` is true nested replies will also be converted.
    */
   convertToDto(comment: Comment, includeReplies: boolean = false): CommentDto {
+    if (!comment.author) {
+      console.error('[CommentAdapter] ERRO: Comment sem author!', { commentId: comment.id, authorId: comment.authorId });
+      throw new Error(`Comment ${comment.id} não tem author carregado`);
+    }
+
     const dto = new CommentDto();
     dto.id = comment.id;
     dto.postId = comment.postId;
     dto.authorId = comment.authorId;
+    dto.author = {
+      id: comment.author.id,
+      name: comment.author.name,
+      email: comment.author.email,
+    };
     dto.parentId = comment.parentId ?? null;
     dto.content = comment.content;
     dto.deletedAt = comment.deletedAt ?? null;

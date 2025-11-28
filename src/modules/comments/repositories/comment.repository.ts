@@ -70,6 +70,7 @@ export class CommentRepository implements ICommentRepository {
   async findById(id: string, withDeleted: boolean = false): Promise<Comment | null> {
     return await this.typeormRepository.findOne({
       where: { id },
+      relations: ['author'],
       withDeleted,
     });
   }
@@ -77,6 +78,7 @@ export class CommentRepository implements ICommentRepository {
   async findByPostId(postId: string, withDeleted: boolean = false): Promise<Comment[]> {
     return await this.typeormRepository.find({
       where: { postId },
+      relations: ['author'],
       order: { createdAt: 'ASC' },
       withDeleted,
     });
@@ -85,6 +87,7 @@ export class CommentRepository implements ICommentRepository {
   async findByParentId(parentId: string, withDeleted: boolean = false): Promise<Comment[]> {
     return await this.typeormRepository.find({
       where: { parentId },
+      relations: ['author'],
       order: { createdAt: 'ASC' },
       withDeleted,
     });

@@ -2,6 +2,17 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { BaseEntityDto } from '@/common/dtos/base-entity.dto';
 import { DeletedAtResponseDto } from '@/common/dtos/traits/soft-deletable.dto';
 
+class CommentAuthorDto {
+  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
+  id!: string;
+
+  @ApiProperty({ example: 'João Silva' })
+  name!: string;
+
+  @ApiProperty({ example: 'joao@example.com' })
+  email!: string;
+}
+
 /**
  * CommentDto is the base representation of a comment returned by the API.
  * It includes identifiers for the associated post and author, the parent
@@ -24,6 +35,12 @@ export class CommentDto extends BaseEntityDto implements DeletedAtResponseDto {
     example: '01923456-7890-7abc-def0-123456789abc',
   })
   authorId!: string;
+
+  @ApiProperty({
+    description: 'Dados do autor',
+    type: CommentAuthorDto,
+  })
+  author!: CommentAuthorDto;
 
   @ApiPropertyOptional({
     format: 'uuid',
