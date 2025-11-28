@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { User } from '@/modules/users/entities/user.entity';
 import { AuthController } from './auth.controller';
 import { UserRepository } from '@/modules/users/repositories/user.repository';
@@ -11,7 +13,16 @@ import { UserAdapter } from '@/modules/users/user.adapter';
 import { PasswordHashingService } from './services/password-hashing.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Session])],
+  imports: [
+    TypeOrmModule.forFeature([User, Session]),
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: { expiresIn: '7d' },
+      }),
+    }),
+  ],
   controllers: [AuthController],
   providers: [
     UserRepository,
