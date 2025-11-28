@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CommentRepository, ICommentRepository } from '@/modules/comments/repositories/comment.repository';
+import { CommentRepository } from '@/modules/comments/repositories/comment.repository';
+import type { ICommentRepository } from '@/modules/comments/repositories/comment.repository';
 import {
   CommentNotFoundException,
   UnauthorizedCommentActionException,

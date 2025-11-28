@@ -45,7 +45,7 @@ import {
 } from './dtos';
 import { ErrorResponseDto } from '@/common/dtos';
 import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
-import { JwtPayload } from '@/modules/auth/types/jwt-payload.interface';
+import type { JwtPayload } from '@/modules/auth/types/jwt-payload.interface';
 
 @ApiTags('Comentários')
 @ApiBearerAuth('JWT-auth')

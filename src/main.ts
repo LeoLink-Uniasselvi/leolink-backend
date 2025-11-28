@@ -27,6 +27,7 @@ async function bootstrap() {
     )
     .addTag('Autenticação', 'Endpoints de autenticação')
     .addTag('Usuários', 'Endpoints de gerenciamento de usuários')
+    .addTag('Posts', 'Endpoints de gerenciamento de posts/publica��ǜes')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
