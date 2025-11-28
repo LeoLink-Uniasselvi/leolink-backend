@@ -12,6 +12,8 @@ export interface ILikeRepository extends IRepository<Like> {
   findByUser(userId: string): Promise<Like[]>;
   countByPost(postId: string): Promise<number>;
   countByComment(commentId: string): Promise<number>;
+  countByTargetId(targetId: string): Promise<number>;
+  hasUserLiked(userId: string, targetId: string): Promise<boolean>;
 }
 
 @Injectable()
@@ -94,5 +96,22 @@ export class LikeRepository implements ILikeRepository {
     return await this.typeormRepository.count({
       where: { commentId },
     });
+  }
+
+  async countByTargetId(targetId: string): Promise<number> {
+    // Conta likes que tenham postId OU commentId igual ao targetId
+    return await this.typeormRepository
+      .createQueryBuilder('like')
+      .where('like.postId = :targetId OR like.commentId = :targetId', { targetId })
+      .getCount();
+  }
+
+  async hasUserLiked(userId: string, targetId: string): Promise<boolean> {
+    const count = await this.typeormRepository
+      .createQueryBuilder('like')
+      .where('like.userId = :userId', { userId })
+      .andWhere('(like.postId = :targetId OR like.commentId = :targetId)', { targetId })
+      .getCount();
+    return count > 0;
   }
 }

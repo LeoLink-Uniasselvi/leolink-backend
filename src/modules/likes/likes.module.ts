@@ -36,5 +36,6 @@ import {
     GetUserLikesUseCase,
     HasUserLikedUseCase,
   ],
+  exports: [LikeRepository],
 })
 export class LikesModule {}

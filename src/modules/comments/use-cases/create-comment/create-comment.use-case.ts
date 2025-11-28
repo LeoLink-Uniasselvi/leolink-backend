@@ -43,7 +43,13 @@ export class CreateCommentUseCase {
     );
     await this.commentRepository.create(comment);
 
-    const dto = this.commentAdapter.convertToDto(comment);
+    // Buscar o comentário com o author carregado
+    const savedComment = await this.commentRepository.findById(comment.id);
+    if (!savedComment) {
+      throw new Error('Erro ao recuperar comentário criado');
+    }
+
+    const dto = this.commentAdapter.convertToDto(savedComment);
     return {
       data: dto,
       message: 'Comentário criado com sucesso',

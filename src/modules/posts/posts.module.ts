@@ -14,11 +14,15 @@ import {
 } from './use-cases';
 import { PostAdapter } from './post.adapter';
 import { UsersModule } from '@/modules/users/users.module';
+import { LikesModule } from '@/modules/likes/likes.module';
+import { CommentsModule } from '@/modules/comments/comments.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Post]),
     forwardRef(() => UsersModule),
+    forwardRef(() => LikesModule),
+    forwardRef(() => CommentsModule),
   ],
   controllers: [PostsController],
   providers: [

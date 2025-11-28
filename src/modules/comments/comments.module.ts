@@ -35,5 +35,6 @@ import { CommentsController } from './comments.controller';
     GetCommentUseCase,
     CountPostCommentsUseCase,
   ],
+  exports: [CommentRepository],
 })
 export class CommentsModule {}

@@ -74,7 +74,7 @@ export class PostsController {
   ) {
     const result = await this.getFeedUseCase.execute(user.sub, +page, +limit);
     return {
-      items: this.postAdapter.toDtoArray(result.posts, user.sub),
+      items: await this.postAdapter.toDtoArray(result.posts, user.sub),
       meta: {
         page: result.page,
         limit: result.limit,
@@ -98,9 +98,9 @@ export class PostsController {
     @Query('limit') limit: number = 10,
     @GetUser() user: JwtPayload,
   ) {
-    const result = await this.getUserPostsUseCase.execute(userId, +page, +limit);
+    const result = await this.getUserPostsUseCase.execute(params.userId, +page, +limit);
     return {
-      items: this.postAdapter.toDtoArray(result.posts, user.sub),
+      items: await this.postAdapter.toDtoArray(result.posts, user.sub),
       meta: {
         page: result.page,
         limit: result.limit,
@@ -129,7 +129,7 @@ export class PostsController {
     
     console.log('[PostsController] Post criado:', { id: post.id, authorId: post.authorId, hasAuthor: !!post.author });
     
-    const data = this.postAdapter.toDto(post, user.sub);
+    const data = await this.postAdapter.toDto(post, user.sub);
     
     console.log('[PostsController] DTO gerado:', data);
     
@@ -159,7 +159,7 @@ export class PostsController {
       totalPages: result.totalPages
     });
     return {
-      items: this.postAdapter.toDtoArray(result.posts, user.sub),
+      items: await this.postAdapter.toDtoArray(result.posts, user.sub),
       meta: {
         page: result.page,
         limit: result.limit,
@@ -178,7 +178,7 @@ export class PostsController {
   @ApiUnauthorizedResponse({ description: 'Token inválido ou ausente', type: ErrorResponseDto })
   async findOne(@Param() params: IdParamDto, @GetUser() user: JwtPayload): Promise<GetPostResponseDto> {
     const post = await this.getPostUseCase.execute(params.id);
-    const data = this.postAdapter.toDto(post, user.sub);
+    const data = await this.postAdapter.toDto(post, user.sub);
     return {
       data,
       message: 'Post encontrado com sucesso',
@@ -200,7 +200,7 @@ export class PostsController {
     @GetUser() user: JwtPayload,
   ): Promise<UpdatePostResponseDto> {
     const post = await this.updatePostUseCase.execute(params.id, updatePostDto.content!, user.sub);
-    const data = this.postAdapter.toDto(post, user.sub);
+    const data = await this.postAdapter.toDto(post, user.sub);
     return {
       data,
       message: 'Post atualizado com sucesso',
